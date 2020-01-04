@@ -103,6 +103,7 @@ def after_request(response):
 from blueprints.User.resource import bp_user
 from blueprints.Item.resource import bp_item
 from blueprints.Cart.resource import bp_cart
+from blueprints.Payment.resource import bp_payment
 from blueprints.Checkout.resource import bp_checkout
 from blueprints.auth import bp_auth
 
@@ -111,5 +112,6 @@ app.register_blueprint(bp_item, url_prefix = '/item')
 app.register_blueprint(bp_auth, url_prefix = '/token')
 app.register_blueprint(bp_cart, url_prefix = '/cart')
 app.register_blueprint(bp_checkout, url_prefix = '/checkout')
+app.register_blueprint(bp_payment, url_prefix = '/payment')
 
 db.create_all()
