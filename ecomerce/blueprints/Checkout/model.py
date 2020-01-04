@@ -5,7 +5,7 @@ import datetime
 class Checkouts(db.Model):
     __tablename__= "Checkout"
     id              = db.Column(db.Integer, primary_key = True, autoincrement = True)
-    cart_id         = db.Column(db.Integer, db.ForeignKey("Cart.id"), nullable = False)
+    cart_id         = db.Column(db.Integer, db.ForeignKey("Cart.id"), unique = True, nullable = False)
     nama_penerima   = db.Column(db.String(255), nullable = False)
     alamat          = db.Column(db.String(255), nullable = False)
     kode_pos        = db.Column(db.String(255), nullable = False)
