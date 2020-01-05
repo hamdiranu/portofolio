@@ -1,8 +1,10 @@
 import json
 from . import client, create_token, reset_db
 from blueprints.Cart.model import Carts
+from blueprints.Checkout.model import Checkouts
+from blueprints import db
 
-class TestCheckoutCrud():
+class TestCartCrud():
 
     idPerson = 0
     reset_db()
@@ -98,41 +100,41 @@ class TestCheckoutCrud():
         
         assert res.status_code == 200
 
-    # def test_cart_get_all_admin_total_item_desc(self, client):
-    #     token = create_token(True)
+    def test_cart_get_all_admin_total_item_desc(self, client):
+        token = create_token(True)
 
-    #     data = {
-    #         "p":1,
-    #         "rp":25,
-    #         "user_id":1,
-    #         "orderby":"total_item",
-    #         "sort":"desc"
-    #     }
+        data = {
+            "p":1,
+            "rp":25,
+            "user_id":1,
+            "orderby":"total_item",
+            "sort":"desc"
+        }
 
-    #     res = client.get('/checkout',query_string = data,
-    #     headers={'Authorization': 'Bearer ' + token})
+        res = client.get('/cart',query_string = data,
+        headers={'Authorization': 'Bearer ' + token})
 
-    #     res_json = json.loads(res.data)
+        res_json = json.loads(res.data)
      
-    #     assert res.status_code == 200
+        assert res.status_code == 200
 
-    # def test_checkout_get_all_admin_total_item_asc(self, client):
-    #     token = create_token(True)
+    def test_checkout_get_all_admin_total_item_asc(self, client):
+        token = create_token(True)
 
-    #     data = {
-    #         "p":1,
-    #         "rp":25,
-    #         "user_id":1,
-    #         "orderby":"total_item",
-    #         "sort":"asc"
-    #     }
+        data = {
+            "p":1,
+            "rp":25,
+            "user_id":1,
+            "orderby":"total_item",
+            "sort":"asc"
+        }
 
-    #     res = client.get('/checkout',query_string= data,
-    #     headers={'Authorization': 'Bearer ' + token})
+        res = client.get('/cart',query_string= data,
+        headers={'Authorization': 'Bearer ' + token})
 
-    #     res_json = json.loads(res.data)
+        res_json = json.loads(res.data)
         
-    #     assert res.status_code == 200
+        assert res.status_code == 200
         
     # ======================================= DELETE ==================================== #
 
@@ -164,3 +166,4 @@ class TestCheckoutCrud():
         res_json = json.loads(res.data)
        
         assert res.status_code == 501
+
