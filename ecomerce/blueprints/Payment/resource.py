@@ -1,3 +1,6 @@
+from mailjet_rest import Client
+import os
+
 from flask import Blueprint
 from flask_restful import Api, reqparse, marshal, Resource, inputs
 from sqlalchemy import desc
@@ -5,7 +8,9 @@ from . import *
 
 from .model import Payments
 from blueprints.Cart.model import Carts
+from blueprints.Cart_detail.model import Cartdetails
 from blueprints.Checkout.model import Checkouts
+from blueprints.User.model import Users
 
 from flask_jwt_extended import JWTManager, verify_jwt_in_request, get_jwt_claims, jwt_required
 from blueprints import db,app, admin_required
@@ -17,7 +22,6 @@ api = Api(bp_payment)
 ################################################
 #              USING RESTFUL-API               #  
 ################################################
-
 
 class PaymentResource(Resource):
 
@@ -48,18 +52,59 @@ class PaymentResource(Resource):
         claims = get_jwt_claims()
         qry_cart = Carts.query.filter_by(user_id = claims["id"]).filter_by(status = False).first()
         qry_checkout = Checkouts.query.filter_by(cart_id = qry_cart.id).first()
+        qry_user = Users.query.filter_by(id = claims["id"]).first()
         
-
         # Mendefinisikan nilai yang diambil dari table lain
         checkout_id = qry_checkout.id
-        # jumlah_barang = qry_checkout.jumlah_barang
-        # total_harga = qry_checkout.total_harga
+        jumlah_barang = qry_checkout.jumlah_barang
+        total_harga = qry_checkout.total_harga
+
 
         # Membuat table payment
         payment = Payments(checkout_id, args['cardholder'], args['card_number'], args['security_code'],
                     args['expired_month'], args['expired_year'], args['status_cod'])
         db.session.add(payment)
         db.session.commit()
+
+        # Membuat API untuk pengiriman email detail pembelian
+        api_key = '618175b9863eb14b6dab6e4abac8c57e'
+        api_secret = '5442e1b5de0a695f518e9041af818e94'
+        mailjet = Client(auth=(api_key, api_secret), version='v3.1')
+
+        # Isi Email
+        email_ecomerce = 'https://www.e-comerce.com/'
+        gratitute = "<h3>Dear Costumer, </h3>"
+        list_item_pembuka = "Berikut list barang yang telah dibeli :<br /><ol>"
+        # Menambahkan list barang pada isi email
+        qry_cart_details = Cartdetails.query.filter_by(cart_id = qry_cart.id)
+        for item in qry_cart_details:
+            list_item_pembuka += "{} ,<br/>Harga : {} ,<br/>dengan jumlah barang : {}<br/><br/>".format(
+                item.product_name, item.product_price, item.total_product)
+        total_barang = "<br />Jumlah Barang = {}".format(jumlah_barang)
+        info_total = "<br />Total Belanja = Rp {}<br />".format(total_harga)
+        kalimat_penutup = "<br />Thank you for purchasing items from <a href="+email_ecomerce+">e-comerce</a>!<br />May the delivery force be with you!"
+
+        data = {
+        'Messages': [
+            {
+            "From": {
+                "Email": "hamdi@alterra.id",
+                "Name": "Admin"
+            },
+            "To": [
+                {
+                "Email": "{}".format(qry_user.email),
+                "Name": "{} {}".format(qry_user.first_name, qry_user.last_name)
+                }
+            ],
+            "Subject": "Payment Confirmation",
+            "TextPart": "My first Mailjet email",
+            "HTMLPart": gratitute+list_item_pembuka+"<ol/>"+total_barang+info_total+kalimat_penutup,
+            "CustomID": "AppGettingStartedTest"
+            }
+        ]
+        }
+        result = mailjet.send.create(data=data)
 
         qry_cart.status = True
         db.session.commit()
