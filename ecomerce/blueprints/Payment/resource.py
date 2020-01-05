@@ -143,8 +143,8 @@ class PaymentList(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('p', location = 'args', type = int, default = 1)
         parser.add_argument('rp', location = 'args', type = int, default = 25)
-        parser.add_argument('user_id', location = 'args')
-        parser.add_argument('orderby', location = 'args', help = 'invalid sort value', choices = ('user_id'))
+        parser.add_argument('checkout_id', location = 'args')
+        parser.add_argument('orderby', location = 'args', help = 'invalid sort value', choices = ('checkout_id'))
         parser.add_argument('sort', location = 'args', help = 'invalid sort value', choices = ('desc','asc'))
         
         args = parser.parse_args()
@@ -153,15 +153,15 @@ class PaymentList(Resource):
 
         qry = Payments.query
 
-        if args['user_id'] is not None:
-            qry = qry.filter_by(user_id = args['user_id'])
+        if args['checkout_id'] is not None:
+            qry = qry.filter_by(checkout_id = args['checkout_id'])
 
         if args['orderby'] is not None :
-            if args['orderby'] == 'user_id':
+            if args['orderby'] == 'checkout_id':
                 if args['sort'] == 'desc':
-                    qry = qry.order_by(desc(Payments.user_id))
+                    qry = qry.order_by(desc(Payments.checkout_id))
                 else:
-                    qry = qry.order_by(Payments.user_id)
+                    qry = qry.order_by(Payments.checkout_id)
         rows = []
         for row in qry.limit(args['rp']).offset(offset).all():
             if row is not None and row.deleted == False:
