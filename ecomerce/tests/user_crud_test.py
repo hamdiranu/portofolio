@@ -8,15 +8,22 @@ class TestUserCrud():
 
     # ======================================= POST ==================================== #
 
-    def test_user_post_internal(self, client):
+    def test_user_post_admin(self, client):
         token = create_token(True)
 
         data = {
-            "name":"hamdi3",
-            "age":25,
-            "sex":"male",
-            "client_id":1
-        }
+                "username"		:"username3",
+                "first_name"	:"leli",
+                "last_name"		:"anto",
+                "gender"		:"Female",
+                "date_of_birth"	:"15 Oktober 1500",
+                "address"		:"jl.Simpang taman Agung nomor 107",
+                "city"			:"Malang",
+                "zip_code"		:"65146",
+                "phone_number"	:"081275988888",
+                "password"		:"username3",
+                "email"			:"lelianto@alterra.id"
+            }
 
         res = client.post('/user', json = data,
         headers={'Authorization': 'Bearer ' + token})
@@ -24,48 +31,12 @@ class TestUserCrud():
         res_json = json.loads(res.data)
         assert res.status_code == 200
         assert res_json['id']>0
-        # assert res_json['client_secret'] == hashlib.md5(data['client_secret'])
         
         self.idPerson = res_json['id']
 
-    def test_user_post_internal_invalid(self, client):
-        token = create_token(True)
-
-        data = {
-            "name":"hamdi3",
-            "age":"dualima",
-            "sex":"male",
-            "client_id":1
-        }
-
-        res = client.post('/user', json = data,
-        headers={'Authorization': 'Bearer ' + token})
-
-        res_json = json.loads(res.data)
-        assert res.status_code == 400
-        # assert res_json['client_secret'] == hashlib.md5(data['client_secret'])
-        
-
-    def test_user_post_noninternal(self, client):
-        token = create_token(False)
-
-        data = {
-            "name":"hamdi4",
-            "age":25,
-            "sex":"male",
-            "client_id":1
-        }
-
-        res = client.post('/user', json = data,
-        headers={'Authorization': 'Bearer ' + token})
-
-        res_json = json.loads(res.data)
-        assert res.status_code == 403
-        # assert res_json['client_secret'] == hashlib.md5(data['client_secret'])
-
     # ======================================= GET ==================================== #
 
-    def test_user_get_id_internal(self, client):
+    def test_user_get_id_admin(self, client):
         token = create_token(True)
         res = client.get('/user/1',
         headers={'Authorization': 'Bearer ' + token})
@@ -74,7 +45,7 @@ class TestUserCrud():
         
         assert res.status_code == 200
 
-    def test_user_get_id_internal_id_outrange(self, client):
+    def test_user_get_id_admin_id_outrange(self, client):
         token = create_token(True)
         res = client.get('/user/100',
         headers={'Authorization': 'Bearer ' + token})
@@ -82,16 +53,16 @@ class TestUserCrud():
         res_json = json.loads(res.data)
         assert res.status_code == 404
     
-    # ======================================= GET_All ==================================== #
+    # # ======================================= GET_All ==================================== #
 
-    def test_user_get_all_internal_age_desc(self, client):
+    def test_user_get_all_admin_gender_desc(self, client):
         token = create_token(True)
 
         data = {
             "p":1,
             "rp":25,
-            "sex":"male",
-            "orderby":"age",
+            "gender":"Male",
+            "orderby":"gender",
             "sort":"desc"
         }
 
@@ -102,18 +73,18 @@ class TestUserCrud():
         
         assert res.status_code == 200
 
-    def test_user_get_all_internal_sex_desc(self, client):
+    def test_user_get_all_admin_username_desc(self, client):
         token = create_token(True)
 
         data = {
             "p":1,
             "rp":25,
-            "sex":"male",
-            "orderby":"sex",
+            "gender":"Male",
+            "orderby":"username",
             "sort":"desc"
         }
 
-        res = client.get('/user',query_string= data,
+        res = client.get('/user',query_string = data,
         headers={'Authorization': 'Bearer ' + token})
 
         res_json = json.loads(res.data)
@@ -121,14 +92,14 @@ class TestUserCrud():
         assert res.status_code == 200
 
 
-    def test_user_get_all_internal_age_asc(self, client):
+    def test_user_get_all_admin_username_asc(self, client):
         token = create_token(True)
 
         data = {
             "p":1,
             "rp":25,
-            "sex":"male",
-            "orderby":"age",
+            "gender":"Male",
+            "orderby":"username",
             "sort":"asc"
         }
 
@@ -139,14 +110,14 @@ class TestUserCrud():
         
         assert res.status_code == 200
 
-    def test_user_get_all_internal_sex_asc(self, client):
+    def test_user_get_all_admin_gender_asc(self, client):
         token = create_token(True)
 
         data = {
             "p":1,
             "rp":25,
-            "sex":"male",
-            "orderby":"sex",
+            "gender":"Male",
+            "orderby":"gender",
             "sort":"asc"
         }
 
@@ -157,17 +128,24 @@ class TestUserCrud():
         
         assert res.status_code == 200
 
-    # ======================================= PUT ==================================== #
+    # # ======================================= PUT ==================================== #
 
-    def test_user_put_internal(self, client):
+    def test_user_put_admin(self, client):
         token = create_token(True)
 
         data = {
-            "name":"hamdi6",
-            "age":25,
-            "sex":"male",
-            "client_id":1
-        }
+                "username"		:"username07",
+                "first_name"	:"leli",
+                "last_name"		:"anto",
+                "gender"		:"Female",
+                "date_of_birth"	:"15 Oktober 1500",
+                "address"		:"jl.Simpang taman Agung nomor 107",
+                "city"			:"Malang",
+                "zip_code"		:"65146",
+                "phone_number"	:"081275988888",
+                "password"		:"username3",
+                "email"			:"lelianto@alterra.id"
+            }
 
         res = client.put('/user/1', json = data,
         headers={'Authorization': 'Bearer ' + token})
@@ -175,18 +153,24 @@ class TestUserCrud():
         res_json = json.loads(res.data)
         assert res.status_code == 200
         assert res_json['id']>0
-        # assert res_json['client_secret'] == hashlib.md5(data['client_secret'])
         
         self.idPerson = res_json['id']
 
-    def test_user_put_internal_id_notfound(self, client):
+    def test_user_put_admin_id_notfound(self, client):
         token = create_token(True)
 
         data = {
-            "name":"hamdi6",
-            "age":25,
-            "sex":"male",
-            "client_id":1
+            "username"		:"username07",
+            "first_name"	:"leli",
+            "last_name"		:"anto",
+            "gender"		:"Female",
+            "date_of_birth"	:"15 Oktober 1500",
+            "address"		:"jl.Simpang taman Agung nomor 107",
+            "city"			:"Malang",
+            "zip_code"		:"65146",
+            "phone_number"	:"081275988888",
+            "password"		:"username3",
+            "email"			:"lelianto@alterra.id"
         }
 
         res = client.put('/user/100', json = data,
@@ -194,44 +178,10 @@ class TestUserCrud():
 
         res_json = json.loads(res.data)
         assert res.status_code == 404
-
-    def test_user_put_internal_invalid(self, client):
-        token = create_token(True)
-
-        data = {
-            "name":"hamdi6",
-            "age":"dualima",
-            "sex":"male",
-            "client_id":1
-        }
-
-        res = client.put('/user/1', json = data,
-        headers={'Authorization': 'Bearer ' + token})
-
-        res_json = json.loads(res.data)
-        assert res.status_code == 400
-        # assert res_json['client_secret'] == hashlib.md5(data['client_secret'])
-        
-    def test_user_put_noninternal(self, client):
-        token = create_token(False)
-
-        data = {
-            "name":"hamdi4",
-            "age":25,
-            "sex":"male",
-            "client_id":1
-        }
-
-        res = client.put('/user/1', json = data,
-        headers={'Authorization': 'Bearer ' + token})
-
-        res_json = json.loads(res.data)
-        assert res.status_code == 403
-        # assert res_json['client_secret'] == hashlib.md5(data['client_secret'])
         
     # ======================================= DELETE ==================================== #
 
-    def test_user_delete_id_internal(self, client):
+    def test_user_delete_id_admin(self, client):
         token = create_token(True)
         res = client.delete('/user/1',
         headers={'Authorization': 'Bearer ' + token})
@@ -240,7 +190,7 @@ class TestUserCrud():
         
         assert res.status_code == 200
 
-    def test_user_delete_id_internal_idnotfound(self, client):
+    def test_user_delete_id_admin_idnotfound(self, client):
         token = create_token(True)
         res = client.delete('/user/100',
         headers={'Authorization': 'Bearer ' + token})
@@ -249,9 +199,9 @@ class TestUserCrud():
        
         assert res.status_code == 404
 
-    # ======================================= PATCH ==================================== #
+    # # ======================================= PATCH ==================================== #
 
-    def test_user_patch_internal(self, client):
+    def test_user_patch_admin(self, client):
         token = create_token(True)
         res = client.patch('/user',
         headers={'Authorization': 'Bearer ' + token})

@@ -3,21 +3,15 @@ from blueprints import app, db
 from app import cache
 from flask import Flask, request
 
-from blueprints.Client.model import Clients
 from blueprints.User.model import Users
-from blueprints.Book.model import Books
 
 def reset_db():
     db.drop_all()
     db.create_all()
 
-    data_client = Clients("CLIENT01", "c1955d22ee05fe485b17369342225129", True)
-    db.session.add(data_client)
-    db.session.commit()
-    data_book=Books("Narnia", "1-234-5678-9101112-13", "hamdiranu")
-    db.session.add(data_book)
-    db.session.commit()
-    data_user=Users("hamdiranu", 23, "male", 1)
+    data_user = Users("username01", "Hamdi", "Ranuharja", "Male", "09 April 2000",
+    "jl.Simpang taman Agung nomor 17", "Malang", "65146", "081275980982",
+    "2222b0104b5621b7a68474f2741bcbf1", "hamdi@alterra.id")
     db.session.add(data_user)
     db.session.commit()
     
@@ -30,18 +24,18 @@ def call_client(request):
 def client(request):
     return call_client(request)
 
-def create_token(isinternal=False):
-    if isinternal:
-        cachename = 'test-internal-token'
+def create_token(isadmin=False):
+    if isadmin:
+        cachename = 'test-admin-token'
         data = {
-            "client_key":"internal",
-            "client_secret":"th1s1s1nt3n4lcl13nt"
+            "username":"admin",
+            "password":"thisisadmin"
         }
     else:
         cachename = 'test-token'
         data = {
-            "client_key":"CLIENT01",
-            "client_secret":"SECRET01"
+            "username":"username01",
+            "password":"username1"
         }
 
     token = cache.get(cachename)
