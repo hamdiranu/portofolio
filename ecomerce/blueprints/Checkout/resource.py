@@ -74,42 +74,7 @@ class CheckoutResource(Resource):
 
             return marshal(qry_checkout, Checkouts.response_fields), 200, {'Content-Type' : 'application/json' }
     
-    @jwt_required
-    @admin_required
-    def put(self, id):
-
-        parser = reqparse.RequestParser()
-        parser.add_argument('cart_id', location = 'json', required = True)
-        parser.add_argument('nama_penerima', location = 'json')
-        parser.add_argument('alamat', location = 'json')
-        parser.add_argument('kode_pos', location = 'json')
-        parser.add_argument('nomor_telepon', location = 'json')
-        parser.add_argument('metode_pengiriman', location = 'json')
-        args = parser.parse_args()
-
-        # Untuk mengambil nilai jumlah barang & total harga
-        qry_cart = Carts.query.get(id)
-        jumlah_barang = qry_cart.total_item
-        total_harga = qry_cart.total_harga
-
-        qry = Checkouts.query.get(id)
-
-        if qry is None:
-            return {'status': 'NOT_FOUND'}, 404
-
-        qry.cart_id = args['cart_id']
-        qry.nama_penerima = args['nama_penerima']
-        qry.alamat = args['alamat']
-        qry.kode_pos = args['kode_pos']
-        qry.nomor_telepon = args['nomor_telepon']
-        qry.metode_pengiriman = args['metode_pengiriman']
-        qry.jumlah_barang = jumlah_barang
-        qry.total_harga = total_harga
-
-        db.session.commit()
-
-        return marshal(qry, Checkouts.response_fields), 200, {'Content-Type' : 'application/json' }
-
+    
     @jwt_required
     @admin_required
     def delete(self,id):
@@ -139,8 +104,8 @@ class CheckoutList(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('p', location = 'args', type = int, default = 1)
         parser.add_argument('rp', location = 'args', type = int, default = 25)
-        parser.add_argument('user_id', location = 'args')
-        parser.add_argument('orderby', location = 'args', help = 'invalid sort value', choices = ('user_id'))
+        parser.add_argument('cart_id', location = 'args')
+        parser.add_argument('orderby', location = 'args', help = 'invalid sort value', choices = ('cart_id',"nama_penerima"))
         parser.add_argument('sort', location = 'args', help = 'invalid sort value', choices = ('desc','asc'))
         
         args = parser.parse_args()
@@ -149,15 +114,21 @@ class CheckoutList(Resource):
 
         qry = Checkouts.query
 
-        if args['user_id'] is not None:
-            qry = qry.filter_by(user_id = args['user_id'])
+        if args['cart_id'] is not None:
+            qry = qry.filter_by(cart_id = args['cart_id'])
 
         if args['orderby'] is not None :
-            if args['orderby'] == 'user_id':
+            if args['orderby'] == 'cart_id':
                 if args['sort'] == 'desc':
-                    qry = qry.order_by(desc(Checkouts.user_id))
+                    qry = qry.order_by(desc(Checkouts.cart_id))
                 else:
-                    qry = qry.order_by(Checkouts.user_id)
+                    qry = qry.order_by(Checkouts.cart_id)
+            elif args['orderby'] == 'nama_penerima':
+                if args['sort'] == 'desc':
+                    qry = qry.order_by(desc(Checkouts.nama_penerima))
+                else:
+                    qry = qry.order_by(Checkouts.nama_penerima)
+
         rows = []
         for row in qry.limit(args['rp']).offset(offset).all():
             if row is not None and row.deleted == False:

@@ -134,7 +134,7 @@ class TestItemCrud():
         token = create_token(True)
 
         data = {
-                "item_name"		:"CARGLOSS YR HC Gothic Helm Half Face - Espresso Brown SG [L]",
+                "item_name"		:"CARGLOic Helm Half Face - Espresso Brown SG [L]",
                 "price"			:"185000",
                 "kategori"		:"OTOMOTIF",
                 "deskripsi"		:"CARGLOSS YR Gothic Helm Half Face - Espresso Brown SG merupakan helm half face berbahan ABS thermoplastic yang didesain retro. Helm juga dilengkapi dengan visor yang dapat melindungi Anda dari sinar matahari. Bagian dalam helm dapat dilepas sehingga memudahkan Anda jika ingin mencucinya. Tali pengikat kuat untuk memberikan keamanan dan kenyamanan ekstra saat menggunakannya.",
@@ -160,7 +160,7 @@ class TestItemCrud():
         token = create_token(True)
 
         data = {
-                "item_name"		:"CARGLOSS YR HC Gothic Helm Half Face - Espresso Brown SG [L]",
+                "item_name"		:"CARGLOSS YR - Espresso Brown SG [L]",
                 "price"			:"185000",
                 "kategori"		:"OTOMOTIF",
                 "deskripsi"		:"CARGLOSS YR Gothic Helm Half Face - Espresso Brown SG merupakan helm half face berbahan ABS thermoplastic yang didesain retro. Helm juga dilengkapi dengan visor yang dapat melindungi Anda dari sinar matahari. Bagian dalam helm dapat dilepas sehingga memudahkan Anda jika ingin mencucinya. Tali pengikat kuat untuk memberikan keamanan dan kenyamanan ekstra saat menggunakannya.",
