@@ -31,7 +31,7 @@ class Payments(db.Model):
     }
 
     def __init__(self, checkout_id, cardholder, card_number, security_code, expired_month, expired_year,
-                status_cod,total_harga):
+                status_cod):
         self.checkout_id = checkout_id
         self.cardholder = cardholder
         self.card_number = card_number
