@@ -21,8 +21,8 @@ class CreateTokenResource(Resource):
         # Create token
 
         parser = reqparse.RequestParser()
-        parser.add_argument('username', location = 'args', required = True)
-        parser.add_argument('password', location = 'args', required = True)
+        parser.add_argument('username', location = 'json', required = True)
+        parser.add_argument('password', location = 'json', required = True)
         args = parser.parse_args()
         
         password = hashlib.md5(args['password'].encode()).hexdigest()
