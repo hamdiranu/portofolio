@@ -17,6 +17,9 @@ api = Api(bp_item)
 
 class ItemResource(Resource):
 
+    def options(self, id=None):
+        return {'status':'ok'},200
+
     def __init__(self):
         pass
 
@@ -116,6 +119,9 @@ class ItemResource(Resource):
         return 'Not yet implement', 501
 
 class ItemList(Resource):
+
+    def options(self, id=None):
+        return {'status':'ok'},200
 
     def __init__(self):
         pass

@@ -20,6 +20,9 @@ api = Api(bp_checkout)
 
 class CheckoutResource(Resource):
 
+    def options(self, id=None):
+        return {'status':'ok'},200
+
     def __init__(self):
         pass
 

@@ -14,7 +14,10 @@ api = Api(bp_auth)
 
 class CreateTokenResource(Resource):
 
-    def get(self):
+    def options(self, id=None):
+        return {'status':'ok'},200
+
+    def post(self):
         # Create token
 
         parser = reqparse.RequestParser()

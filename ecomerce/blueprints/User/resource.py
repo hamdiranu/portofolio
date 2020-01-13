@@ -22,6 +22,9 @@ from password_strength import PasswordPolicy
 
 class UserResource(Resource):
 
+    def options(self, id=None):
+        return {'status':'ok'},200
+
     def __init__(self):
         pass
 
@@ -143,6 +146,9 @@ class UserResource(Resource):
         return 'Not yet implement', 501
 
 class UserList(Resource):
+
+    def options(self, id=None):
+        return {'status':'ok'},200
 
     def __init__(self):
         pass

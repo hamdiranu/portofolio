@@ -22,6 +22,9 @@ api = Api(bp_cart)
 
 class CartResource(Resource):
 
+    def options(self, id=None):
+        return {'status':'ok'},200
+
     def __init__(self):
         pass
 
@@ -31,6 +34,7 @@ class CartResource(Resource):
         if qry is not None and qry.deleted == False:
             return marshal(qry, Carts.response_fields), 200
         return {'status':'NOT_FOUND'}, 404
+
 
     @jwt_required
     def post(self):
@@ -137,6 +141,9 @@ class CartResource(Resource):
         return 'Not yet implement', 501
 
 class CartList(Resource):
+
+    def options(self, id=None):
+        return {'status':'ok'},200
 
     def __init__(self):
         pass
