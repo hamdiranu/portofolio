@@ -184,5 +184,49 @@ class CartList(Resource):
                 rows.append(marshal(row,Carts.response_fields))
         return rows, 200
 
+class CartDetailList(Resource):
+
+    def options(self, id=None):
+        return {'status':'ok'},200
+
+    def __init__(self):
+        pass
+    
+    def get(self, id=None):
+        parser = reqparse.RequestParser()
+        parser.add_argument('p', location = 'args', type = int, default = 1)
+        parser.add_argument('rp', location = 'args', type = int, default = 25)
+        parser.add_argument('user_id', location = 'args')
+        parser.add_argument('orderby', location = 'args', help = 'invalid sort value', choices = ("total_item","total_harga"))
+        parser.add_argument('sort', location = 'args', help = 'invalid sort value', choices = ('desc','asc'))
+        
+        args = parser.parse_args()
+
+        offset = (args['p'] * args['rp']) - args['rp']
+
+        qry = Cartdetails.query
+
+        if args['user_id'] is not None:
+            qry = qry.filter_by(user_id = args['user_id'])
+
+        if args['orderby'] is not None :
+            if args['orderby'] == 'total_item':
+                if args['sort'] == 'desc':
+                    qry = qry.order_by(desc(Cartdetails.total_item))
+                else:
+                    qry = qry.order_by(Cartdetails.total_item)
+            elif args['orderby'] == 'total_harga':
+                if args['sort'] == 'desc':
+                    qry = qry.order_by(desc(Cartdetails.total_harga))
+                else:
+                    qry = qry.order_by(Cartdetails.total_harga)
+
+        rows = []
+        for row in qry.limit(args['rp']).offset(offset).all():
+            if row is not None and row.deleted == False:
+                rows.append(marshal(row,Cartdetails.response_fields))
+        return rows, 200
+
 api.add_resource(CartList, '', '/list')
 api.add_resource(CartResource, '', '/<id>')
+api.add_resource(CartDetailList, '', '/detail')
