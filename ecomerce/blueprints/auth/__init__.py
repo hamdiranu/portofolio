@@ -39,7 +39,7 @@ class CreateTokenResource(Resource):
                 clientData = marshal(clientData, Users.jwt_claims_fields)
                 clientData['isadmin'] = False
                 token= create_access_token(identity = args['username'], user_claims = clientData)
-                return {'token':token}, 200
+                return {'token':token,'id':clientData["id"]}, 200
             else:
                 return {'status':'UNAUTHORIZED', 'message': 'invalid key or secret'}, 401
 

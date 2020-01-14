@@ -28,8 +28,6 @@ class UserResource(Resource):
     def __init__(self):
         pass
 
-    @jwt_required
-    @admin_required
     def get(self, id):
         qry = Users.query.get(id)
         if qry is not None and qry.deleted == False:

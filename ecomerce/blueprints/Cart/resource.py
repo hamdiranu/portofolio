@@ -149,7 +149,6 @@ class CartList(Resource):
         pass
     
     @jwt_required
-    @admin_required
     def get(self, id=None):
         parser = reqparse.RequestParser()
         parser.add_argument('p', location = 'args', type = int, default = 1)
