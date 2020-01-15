@@ -70,7 +70,7 @@ class CartResource(Resource):
 
             # Menambahkan cart_detail baru
             cart_detail = Cartdetails(qry_cart.id, int(args["product_id"]), qry_item.item_name,
-                 qry_item.price, int(args["total_product"]),sub_total)
+                 qry_item.price, int(args["total_product"]), qry_item.gambar_1,sub_total)
             db.session.add(cart_detail)
             db.session.commit()
 
@@ -91,7 +91,7 @@ class CartResource(Resource):
 
             if qry_cart_detail == None:
                 cart_detail = Cartdetails(qry_cart.id, int(args["product_id"]), qry_item.item_name,
-                 qry_item.price, int(args["total_product"]),sub_total)
+                 qry_item.price, int(args["total_product"]), qry_item.gambar_1,sub_total)
                 db.session.add(cart_detail)
                 db.session.commit()
 
