@@ -98,6 +98,9 @@ class CheckoutResource(Resource):
 
 class CheckoutList(Resource):
 
+    def options(self, id=None):
+        return {'status':'ok'},200
+
     def __init__(self):
         pass
     
