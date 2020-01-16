@@ -196,8 +196,8 @@ class CartDetailList(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('p', location = 'args', type = int, default = 1)
         parser.add_argument('rp', location = 'args', type = int, default = 25)
-        parser.add_argument('user_id', location = 'args')
-        parser.add_argument('orderby', location = 'args', help = 'invalid sort value', choices = ("total_item","total_harga"))
+        parser.add_argument('cart_id', location = 'args')
+        parser.add_argument('orderby', location = 'args', help = 'invalid sort value', choices = ("total_product","sub_total"))
         parser.add_argument('sort', location = 'args', help = 'invalid sort value', choices = ('desc','asc'))
         
         args = parser.parse_args()
@@ -206,20 +206,20 @@ class CartDetailList(Resource):
 
         qry = Cartdetails.query
 
-        if args['user_id'] is not None:
-            qry = qry.filter_by(user_id = args['user_id'])
+        if args['cart_id'] is not None:
+            qry = qry.filter_by(cart_id = args['cart_id'])
 
         if args['orderby'] is not None :
-            if args['orderby'] == 'total_item':
+            if args['orderby'] == 'total_product':
                 if args['sort'] == 'desc':
-                    qry = qry.order_by(desc(Cartdetails.total_item))
+                    qry = qry.order_by(desc(Cartdetails.total_product))
                 else:
-                    qry = qry.order_by(Cartdetails.total_item)
-            elif args['orderby'] == 'total_harga':
+                    qry = qry.order_by(Cartdetails.total_product)
+            elif args['orderby'] == 'sub_total':
                 if args['sort'] == 'desc':
-                    qry = qry.order_by(desc(Cartdetails.total_harga))
+                    qry = qry.order_by(desc(Cartdetails.sub_total))
                 else:
-                    qry = qry.order_by(Cartdetails.total_harga)
+                    qry = qry.order_by(Cartdetails.sub_total)
 
         rows = []
         for row in qry.limit(args['rp']).offset(offset).all():
