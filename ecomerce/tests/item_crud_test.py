@@ -34,7 +34,7 @@ class TestItemCrud():
         
         self.idPerson = res_json['id']
 
-    # # ======================================= GET ==================================== #
+    # ======================================= GET ==================================== #
 
     def test_item_get_id_admin(self, client):
         token = create_token(True)
@@ -179,7 +179,7 @@ class TestItemCrud():
         res_json = json.loads(res.data)
         assert res.status_code == 404
         
-    # # ======================================= DELETE ==================================== #
+    # ======================================= DELETE ==================================== #
 
     def test_item_delete_id_admin(self, client):
         token = create_token(True)

@@ -61,7 +61,7 @@ def create_token(isadmin=False):
     if token is None:
         # Do request
         req = call_client(request)
-        res = req.get('/token',query_string = data)
+        res = req.post('/token',json = data, content_type="application/json")
 
         # Store response
         res_json = json.loads(res.data)

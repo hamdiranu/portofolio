@@ -48,7 +48,7 @@ class TestPaymentCrud():
         res_json = json.loads(res.data)
         assert res.status_code == 404
     
-    # # ======================================= GET_All ==================================== #
+    # ======================================= GET_All ==================================== #
 
     def test_payment_get_all_admin_checkout_id_desc(self, client):
         token = create_token(True)
