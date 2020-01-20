@@ -75,7 +75,7 @@ class PaymentResource(Resource):
         mailjet = Client(auth=(api_key, api_secret), version='v3.1')
 
         # Isi Email
-        email_ecomerce = 'https://www.e-comerce.com/'
+        email_ecomerce = 'https://www.manggaleh.com/'
         gratitute = "<h3>Dear Costumer, </h3>"
         list_item_pembuka = "Berikut list barang yang telah dibeli :<br /><ol>"
         # Menambahkan list barang pada isi email
@@ -85,7 +85,7 @@ class PaymentResource(Resource):
                 item.product_name, item.product_price, item.total_product)
         total_barang = "<br />Jumlah Barang = {}".format(jumlah_barang)
         info_total = "<br />Total Belanja = Rp {}<br />".format(total_harga)
-        kalimat_penutup = "<br />Thank you for purchasing items from <a href="+email_ecomerce+">e-comerce</a>!<br />May the delivery force be with you!"
+        kalimat_penutup = "<br />Thank you for purchasing items from <a href="+email_ecomerce+">Manggaleh.com</a>!<br />May the delivery force be with you!"
 
         data = {
         'Messages': [
