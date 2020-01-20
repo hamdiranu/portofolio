@@ -22,11 +22,12 @@ from password_strength import PasswordPolicy
 
 class UserResource(Resource):
 
+    def options(self, id=None):
+        return {'status':'ok'},200
+
     def __init__(self):
         pass
 
-    @jwt_required
-    @admin_required
     def get(self, id):
         qry = Users.query.get(id)
         if qry is not None and qry.deleted == False:
@@ -143,6 +144,9 @@ class UserResource(Resource):
         return 'Not yet implement', 501
 
 class UserList(Resource):
+
+    def options(self, id=None):
+        return {'status':'ok'},200
 
     def __init__(self):
         pass

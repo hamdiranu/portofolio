@@ -53,7 +53,7 @@ class TestUserCrud():
         res_json = json.loads(res.data)
         assert res.status_code == 404
     
-    # # ======================================= GET_All ==================================== #
+    # ======================================= GET_All ==================================== #
 
     def test_user_get_all_admin_gender_desc(self, client):
         token = create_token(True)
@@ -128,7 +128,7 @@ class TestUserCrud():
         
         assert res.status_code == 200
 
-    # # ======================================= PUT ==================================== #
+    # ======================================= PUT ==================================== #
 
     def test_user_put_admin(self, client):
         token = create_token(True)
@@ -199,7 +199,7 @@ class TestUserCrud():
        
         assert res.status_code == 404
 
-    # # ======================================= PATCH ==================================== #
+    # ======================================= PATCH ==================================== #
 
     def test_user_patch_admin(self, client):
         token = create_token(True)

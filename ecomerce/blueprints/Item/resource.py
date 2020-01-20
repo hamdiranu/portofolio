@@ -17,10 +17,12 @@ api = Api(bp_item)
 
 class ItemResource(Resource):
 
+    def options(self, id=None):
+        return {'status':'ok'},200
+
     def __init__(self):
         pass
 
-    @jwt_required
     def get(self, id):
         qry = Items.query.get(id)
         if qry is not None and qry.deleted == False:
@@ -117,10 +119,13 @@ class ItemResource(Resource):
 
 class ItemList(Resource):
 
+    def options(self, id=None):
+        return {'status':'ok'},200
+
     def __init__(self):
         pass
     
-    @jwt_required
+    
     def get(self, id=None):
         parser = reqparse.RequestParser()
         parser.add_argument('p', location = 'args', type = int, default = 1)
@@ -137,7 +142,7 @@ class ItemList(Resource):
 
         # Pencarian item berdasarkan nama
         if args['item_name'] is not None:
-            qry = qry.filter_by(item_name = args['item_name'])
+            qry = qry.filter(Items.item_name.like('%' + args['item_name'] + '%'))
 
         # Pengurutan item berdasarkan nama/harga
         if args['orderby'] is not None :

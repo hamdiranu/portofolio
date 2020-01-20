@@ -9,8 +9,10 @@ from logging.handlers import RotatingFileHandler
 import datetime
 from functools import wraps
 from flask_jwt_extended import JWTManager, verify_jwt_in_request, get_jwt_claims
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 app.config['APP_DEBUG'] = True
 

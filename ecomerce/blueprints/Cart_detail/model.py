@@ -10,6 +10,7 @@ class Cartdetails(db.Model):
     product_name    = db.Column(db.String(255), nullable = True)
     product_price   = db.Column(db.Integer, nullable = True)
     total_product   = db.Column(db.Integer, nullable = True, default = 0)
+    gambar_1        = db.Column(db.String(255), nullable = True)
     sub_total       = db.Column(db.Integer, nullable = True, default = 0)
     created_at      = db.Column(db.DateTime, default = datetime.datetime.now())
     update_at       = db.Column(db.DateTime, onupdate = datetime.datetime.now())
@@ -22,18 +23,20 @@ class Cartdetails(db.Model):
         'product_name' : fields.String,
         'product_price': fields.Integer,
         'total_product': fields.Integer,
+        'gambar_1'     : fields.String,
         'sub_total'    : fields.Integer,
         'created_at'   : fields.DateTime,
         'updated_at'   : fields.DateTime,
         'deleted'      : fields.Boolean
     }
 
-    def __init__(self, cart_id, product_id, product_name, product_price, total_product, sub_total):
+    def __init__(self, cart_id, product_id, product_name, product_price, total_product, gambar_1, sub_total):
         self.cart_id = cart_id
         self.product_id = product_id
         self.product_name = product_name
         self.product_price = product_price
         self.total_product = total_product
+        self.gambar_1 = gambar_1
         self.sub_total = sub_total
 
     def __repr_(self):

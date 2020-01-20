@@ -8,3 +8,4 @@ flask-jwt-extended
 password_strength
 requests
 mock
+flask-cors

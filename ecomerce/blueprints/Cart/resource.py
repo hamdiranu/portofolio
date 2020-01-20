@@ -22,6 +22,9 @@ api = Api(bp_cart)
 
 class CartResource(Resource):
 
+    def options(self, id=None):
+        return {'status':'ok'},200
+
     def __init__(self):
         pass
 
@@ -31,6 +34,7 @@ class CartResource(Resource):
         if qry is not None and qry.deleted == False:
             return marshal(qry, Carts.response_fields), 200
         return {'status':'NOT_FOUND'}, 404
+
 
     @jwt_required
     def post(self):
@@ -66,7 +70,7 @@ class CartResource(Resource):
 
             # Menambahkan cart_detail baru
             cart_detail = Cartdetails(qry_cart.id, int(args["product_id"]), qry_item.item_name,
-                 qry_item.price, int(args["total_product"]),sub_total)
+                 qry_item.price, int(args["total_product"]), qry_item.gambar_1,sub_total)
             db.session.add(cart_detail)
             db.session.commit()
 
@@ -87,7 +91,7 @@ class CartResource(Resource):
 
             if qry_cart_detail == None:
                 cart_detail = Cartdetails(qry_cart.id, int(args["product_id"]), qry_item.item_name,
-                 qry_item.price, int(args["total_product"]),sub_total)
+                 qry_item.price, int(args["total_product"]), qry_item.gambar_1,sub_total)
                 db.session.add(cart_detail)
                 db.session.commit()
 
@@ -138,11 +142,13 @@ class CartResource(Resource):
 
 class CartList(Resource):
 
+    def options(self, id=None):
+        return {'status':'ok'},200
+
     def __init__(self):
         pass
     
     @jwt_required
-    @admin_required
     def get(self, id=None):
         parser = reqparse.RequestParser()
         parser.add_argument('p', location = 'args', type = int, default = 1)
@@ -178,5 +184,49 @@ class CartList(Resource):
                 rows.append(marshal(row,Carts.response_fields))
         return rows, 200
 
+class CartDetailList(Resource):
+
+    def options(self, id=None):
+        return {'status':'ok'},200
+
+    def __init__(self):
+        pass
+    
+    def get(self, id=None):
+        parser = reqparse.RequestParser()
+        parser.add_argument('p', location = 'args', type = int, default = 1)
+        parser.add_argument('rp', location = 'args', type = int, default = 25)
+        parser.add_argument('cart_id', location = 'args')
+        parser.add_argument('orderby', location = 'args', help = 'invalid sort value', choices = ("total_product","sub_total"))
+        parser.add_argument('sort', location = 'args', help = 'invalid sort value', choices = ('desc','asc'))
+        
+        args = parser.parse_args()
+
+        offset = (args['p'] * args['rp']) - args['rp']
+
+        qry = Cartdetails.query
+
+        if args['cart_id'] is not None:
+            qry = qry.filter_by(cart_id = args['cart_id'])
+
+        if args['orderby'] is not None :
+            if args['orderby'] == 'total_product':
+                if args['sort'] == 'desc':
+                    qry = qry.order_by(desc(Cartdetails.total_product))
+                else:
+                    qry = qry.order_by(Cartdetails.total_product)
+            elif args['orderby'] == 'sub_total':
+                if args['sort'] == 'desc':
+                    qry = qry.order_by(desc(Cartdetails.sub_total))
+                else:
+                    qry = qry.order_by(Cartdetails.sub_total)
+
+        rows = []
+        for row in qry.limit(args['rp']).offset(offset).all():
+            if row is not None and row.deleted == False:
+                rows.append(marshal(row,Cartdetails.response_fields))
+        return rows, 200
+
 api.add_resource(CartList, '', '/list')
 api.add_resource(CartResource, '', '/<id>')
+api.add_resource(CartDetailList, '', '/detail')
