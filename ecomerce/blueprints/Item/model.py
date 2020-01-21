@@ -5,7 +5,7 @@ import datetime
 class Items(db.Model):
     __tablename__= "Item"
     id              = db.Column(db.Integer, primary_key = True, autoincrement = True)
-    item_name       = db.Column(db.String(255), unique = True, nullable = False)
+    item_name       = db.Column(db.String(190), unique = True, nullable = False)
     price           = db.Column(db.Integer, nullable = True)
     kategori        = db.Column(db.String(50), nullable = True)
     deskripsi       = db.Column(db.Text, nullable = False)

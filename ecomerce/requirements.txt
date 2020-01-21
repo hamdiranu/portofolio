@@ -9,3 +9,4 @@ password_strength
 requests
 mock
 flask-cors
+mailjet_rest
