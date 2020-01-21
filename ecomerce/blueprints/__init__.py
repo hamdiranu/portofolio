@@ -32,7 +32,7 @@ jwt = JWTManager(app)
 try:
     env = os.environ.get('FLASK_ENV', 'development')
     if env == 'testing':
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:8hamdiranu9@portofolio.cbxmczjsc4sm.ap-southeast-1.rds.amazonaws.com:3306/portofolio' 
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:8hamdiranu9@portofolio.cbxmczjsc4sm.ap-southeast-1.rds.amazonaws.com:3306/portofolio_test'
     else:
         app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:8hamdiranu9@portofolio.cbxmczjsc4sm.ap-southeast-1.rds.amazonaws.com:3306/portofolio'
 
