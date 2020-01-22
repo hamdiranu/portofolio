@@ -2,7 +2,7 @@
 
 eval "$(ssh-agent -s)" &&
 ssh-add -k ~/.ssh/id_rsa &&
-cd /home/admin/var/www
+cd /home/admin/var/www/ecomerce
 git pull
 
 source ~/.profile
