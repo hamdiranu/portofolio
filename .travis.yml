@@ -17,10 +17,15 @@ script:
   - sudo chmod +x deploy.sh
   - sudo chmod 600 deploy_rsa
 after_script:
+  - sed -i -e 's|FLASK_ENV_TRAVIS|'"${FLASK_ENV_TRAVIS}"'|g' ./Dockerfile
+  - sed -i -e 's|THIS_U_NAME_TRAVIS|'"${THIS_U_NAME_TRAVIS}"'|g' ./Dockerfile
+  - sed -i -e 's|THIS_PASSWORD_TRAVIS|'"${THIS_PASSWORD_TRAVIS}"'|g' ./Dockerfile
+  - sed -i -e 's|THIS_DB_TEST_TRAVIS|'"${THIS_DB_TEST_TRAVIS}"'|g' ./Dockerfile
+  - sed -i -e 's|THIS_DB_DEV_TRAVIS|'"${THIS_DB_DEV_TRAVIS}"'|g' ./Dockerfile
+  - sed -i -e 's|THIS_DB_ENDPOINT_TRAVIS|'"${THIS_DB_ENDPOINT_TRAVIS}"'|g' ./Dockerfile
   - docker build -t ${DOCKER_HUB_ORG}/${DOCKER_IMAGE_NAME}:backend-${TRAVIS_BUILD_ID} .
   - docker push ${DOCKER_HUB_ORG}/${DOCKER_IMAGE_NAME}:backend-${TRAVIS_BUILD_ID}
   - docker tag ${DOCKER_HUB_ORG}/${DOCKER_IMAGE_NAME}:backend-${TRAVIS_BUILD_ID} ${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:be2
   - docker push ${DOCKER_HUB_ORG}/${DOCKER_IMAGE_NAME}:be2
   - ssh-keyscan -H $SSH_IP >> ~/.ssh/known_hosts
   - ssh -v -i deploy_rsa $SSH_USER@$SSH_IP DIR=$ROOT_DIR  'bash -s' < deploy.sh
-#triger

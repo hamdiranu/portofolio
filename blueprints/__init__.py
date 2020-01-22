@@ -6,13 +6,19 @@ from flask_script import Manager
 from flask_restful import Resource, Api
 import json, logging
 from logging.handlers import RotatingFileHandler
-import datetime
+import datetime, os
 from functools import wraps
 from flask_jwt_extended import JWTManager, verify_jwt_in_request, get_jwt_claims
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
+
+u_name=os.environ["THIS_U_NAME"]
+password = os.environ["THIS_PASSWORD"]
+db_test = os.environ["THIS_DB_TEST"]
+db_dev = os.environ["THIS_DB_DEV"]
+endpoint = os.environ["THIS_ENDPOINT"]
 
 app.config['APP_DEBUG'] = True
 
@@ -32,9 +38,9 @@ jwt = JWTManager(app)
 try:
     env = os.environ.get('FLASK_ENV', 'development')
     if env == 'testing':
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:8hamdiranu9@portofolio.cbxmczjsc4sm.ap-southeast-1.rds.amazonaws.com:3306/portofolio_test'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{u_name}:{password}@{endpoint}:3306/{db_test}'.format(u_name=u_name, password=password, endpoint=endpoint, db_test=db_test)
     else:
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:8hamdiranu9@portofolio.cbxmczjsc4sm.ap-southeast-1.rds.amazonaws.com:3306/portofolio'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{u_name}:{password}@{endpoint}:3306/{db_dev}'.format(u_name=u_name, password=password, endpoint=endpoint, db_dev=db_dev)
 
 except Exception as e:
     raise e    

@@ -4,6 +4,12 @@ MAINTAINER Your Name "hamdi@alterra.id"
 RUN mkdir -p /demo
 COPY . /demo
 RUN pip install -r /demo/requirements.txt
+ENV FLASK_ENV        = FLASK_ENV_TRAVIS
+ENV THIS_U_NAME      = THIS_U_NAME_TRAVIS
+ENV THIS_PASSWORD    = THIS_PASSWORD_TRAVIS
+ENV THIS_DB_TEST     = THIS_DB_TEST_TRAVIS
+ENV THIS_DB_DEV      = THIS_DB_DEV_TRAVIS
+ENV THIS_DB_ENDPOINT = THIS_DB_ENDPOINT_TRAVIS
 WORKDIR /demo
 ENTRYPOINT [ "python" ]
 CMD [ "app.py" ]
