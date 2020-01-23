@@ -6,7 +6,7 @@ from flask_script import Manager
 from flask_restful import Resource, Api
 import json, logging
 from logging.handlers import RotatingFileHandler
-import datetime, os
+import datetime
 from functools import wraps
 from flask_jwt_extended import JWTManager, verify_jwt_in_request, get_jwt_claims
 from flask_cors import CORS
@@ -14,11 +14,11 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-u_name=os.environ["THIS_U_NAME"]
+u_name = os.environ["THIS_U_NAME"]
 password = os.environ["THIS_PASSWORD"]
+endpoint = os.environ["THIS_ENDPOINT"]
 db_test = os.environ["THIS_DB_TEST"]
 db_dev = os.environ["THIS_DB_DEV"]
-endpoint = os.environ["THIS_ENDPOINT"]
 
 app.config['APP_DEBUG'] = True
 
