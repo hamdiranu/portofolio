@@ -34,7 +34,8 @@ class Users(db.Model):
         'password'      : fields.String,
         'email'         : fields.String,
         'created_at'    : fields.DateTime,
-        'update_at'     : fields.DateTime
+        'update_at'     : fields.DateTime,
+        'deleted'       : fields.Boolean
     }
 
     jwt_claims_fields = {
